@@ -1,25 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets Table</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        th {
-            background-color: lightgray;
-        }
-    </style>
+    <script src="https://kit.fontawesome.com/d1807a784c.js" crossorigin="anonymous"></script>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
 </head>
 <body>
-    <h1>Google Sheets Table</h1>
-    <table>
+    <div class="navigation">
+        <ul>
+            <li class="list">
+                <a href="/">
+                    <span class="icon"><i class="fa-regular fa-4"></i><i class="fa-regular fa-2"></i><i class="fa-regular fa-1"></i><i class="fa-regular fa-7"></i></span>
+                    <span class="title">Operador 4217</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="/">
+                    <span class="icon"><i class="fa-regular fa-3"></i><i class="fa-regular fa-6"></i><i class="fa-regular fa-5"></i><i class="fa-regular fa-4"></i></span>
+                    <span class="title">Operador 3654</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="/">
+                    <span class="icon"><i class="fa-regular fa-4"></i><i class="fa-regular fa-2"></i><i class="fa-regular fa-3"></i><i class="fa-regular fa-8"></i></span>
+                    <span class="title">Operador 4238</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="/">
+                    <span class="icon"><i class="fa-regular fa-4"></i><i class="fa-regular fa-2"></i><i class="fa-solid fa-0"></i><i class="fa-solid fa-0"></i></span>
+                    <span class="title">Operador 4200</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <h1 style="position: relative; left: 5%;transform: translate(40%,0%);">Google Sheets Table</h1>
+    <table style="position: relative; left: 5%;transform: translate(20%,50%);">
         <thead>
             <tr>
                 <th>ID</th>
