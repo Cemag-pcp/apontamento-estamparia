@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sheets Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Sheets Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Quantidade prog.</th>
+                <th>Quantidade real.</th>
+                <th>Máquina</th>
+                <th>Finalizado?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in sheet_data %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td contenteditable="true">{{ row[5] }}</td>
+                    <td>
+                        <select id='dropdown1'>
+                            <option value="" disabled selected></option>
+                            <option value="opcao1">Opção 1</option>
+                            <option value="opcao2">Opção 2</option>
+                            <option value="opcao3">Opção 3</option>
+                        </select> 
+                    </td>
+                    <td>
+                        <select id='dropdown2'>
+                            <option value="" disabled selected></option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="sendRow({{ loop.index }})">Enviar</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<script>
+
+    function sendRow(rowId) {
+        // Obter os dados da linha correspondente
+        var row = document.querySelectorAll('tr')[rowId];
+        var rowData = [];
+        row.querySelectorAll('td').forEach(function(cell) {
+            rowData.push(cell.innerText);
+        });
+
+        // Obter o valor selecionado do dropdown
+        var dropdown1Value = document.getElementById('dropdown1').value;
+        var dropdown2Value = document.getElementById('dropdown2').value;
+
+        // Verificar se a coluna 5 está vazia
+        var quantidadeValue = rowData[5]; // Índice 5 representa a coluna 6
+        var maquinaValue = rowData[6];
+        var finalizouValue = rowData[7];
+
+        if (quantidadeValue === '') {
+            alert('A coluna de quantidade está vazia. Preencha o valor antes de enviar.');
+            return;
+        }
+        if (maquinaValue === '') {
+            alert('Escolha uma máquina.');
+            return;
+        }
+        if (finalizouValue === '') {
+            alert('Escolha uma opção na coluna de "Finalizou".');
+            return;
+        }
+        
+
+        // Enviar os dados para o servidor Flask
+        fetch('/send_row', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            row_data: rowData,
+            dropdown1_value: dropdown1Value,
+            dropdown2_value: dropdown2Value
+
+
+            })
+        }).then(function(response) {
+            if (response.ok) {
+                alert('Linha enviada com sucesso!');
+                reloadPage(); // Recarregar a página
+            } else {
+                alert('Ocorreu um erro ao enviar a linha.');
+            }
+        }).catch(function(error) {
+            console.log(error);
+            alert('Ocorreu um erro ao enviar a linha.');
+        });
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+
+</script>
+
+
+</body>
+</html>
