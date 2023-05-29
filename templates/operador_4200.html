@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Google Sheets Table</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        th {
-            background-color: lightgray;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-</head>
-<body>
+{% extends "index.html" %}
+{% block body %}
     <h1>Google Sheets Table</h1>
     <table>
         <thead>
@@ -101,5 +81,4 @@
   });
 
 </script>
-</body>
-</html>
+{% endblock %}

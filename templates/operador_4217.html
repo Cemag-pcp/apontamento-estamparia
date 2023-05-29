@@ -1,29 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Google Sheets Table</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        th {
-            background-color: lightgray;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-</head>
-<body>
-    <h1>Google Sheets Table</h1>
+{% extends "index.html" %}
+{% block body %}
+    
+<h1 id = 'titulo'>Google Sheets Table</h1>
+<div id ='planilha'>
     <table>
         <thead>
-            <tr>
+            <tr id = 'nomes_colunas' >
                 <th>Id</th>
                 <th>Data</th>
                 <th>Código</th>
@@ -44,7 +26,7 @@
                     <td><input type="text" value="{{ data[2] }}" disabled></td>
                     <td><input type="text" value="{{ data[3] }}" disabled></td>
                     <td><input type="text" value="{{ data[4] }}" disabled></td>
-                    <td><input type="text" value="{{ data[5] }}" required/></td>
+                    <td><input type="text" value="{{ data[5] }}" /></td>
                     <td><input type="text" value="{{ data[6] }}" /></td>
                     <td>
                         <select>
@@ -63,7 +45,7 @@
                     <td><button class="botao-enviar-linha">Enviar</button></td>
                 </tr>
                 {% endfor %}
-            
+
             {% else %}
                 <tr>
                     <td colspan="9">Nenhum dado disponível</td>
@@ -71,6 +53,7 @@
             {% endif %}
         </tbody>
     </table>
+</div>
 
 <script>
 
@@ -101,5 +84,4 @@
   });
 
 </script>
-</body>
-</html>
+{% endblock %}

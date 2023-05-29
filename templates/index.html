@@ -16,7 +16,7 @@
                 <li class="list active">
                     <b></b>
                     <b></b>
-                    <a href="#">
+                    <a href="/4217">
                         <span class="icon"><i class="fa-sharp fa-solid fa-4"></i><i class="fa-sharp fa-solid fa-2"></i><i class="fa-sharp fa-solid fa-1"></i><i class="fa-sharp fa-solid fa-7"></i></span>
                         <span class="title">Operador</span>
                     </a>
@@ -24,7 +24,7 @@
                 <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="#">
+                    <a href="/3654">
                         <span class="icon"><i class="fa-sharp fa-solid fa-3"></i><i class="fa-sharp fa-solid fa-6"></i><i class="fa-sharp fa-solid fa-5"></i><i class="fa-sharp fa-solid fa-4"></i></span>
                         <span class="title">Operador</span>
                     </a>
@@ -32,7 +32,7 @@
                 <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="#">
+                    <a href="/4238">
                         <span class="icon"><i class="fa-sharp fa-solid fa-4"></i><i class="fa-sharp fa-solid fa-2"></i><i class="fa-sharp fa-solid fa-3"></i><i class="fa-sharp fa-solid fa-8"></i></span>
                         <span class="title">Operador</span>
                     </a>
@@ -40,7 +40,7 @@
                 <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="#">
+                    <a href="/4200">
                         <span class="icon"><i class="fa-sharp fa-solid fa-4"></i><i class="fa-sharp fa-solid fa-2"></i><i class="fa-sharp fa-solid fa-0"></i><i class="fa-sharp fa-solid fa-0"></i></span>
                         <span class="title">Operador</span>
                     </a>
@@ -53,52 +53,9 @@
         <i class="fa-sharp fa-solid fa-bars" id ='open'></i>
         <i class="fa-sharp fa-solid fa-xmark" id = 'close'></i>
     </div>
-
-    <h1 id = 'titulo'>Google Sheets Table</h1>
-    <div id ='planilha'>
-        <table>
-            <thead>
-                <tr id = 'nomes_colunas' >
-                    <th>Id</th>
-                    <th>Data</th>
-                    <th>Código</th>
-                    <th>Descrição</th>
-                    <th>Qt. Prog.</th>
-                    <th>Qt. Real</th>
-                    <th>Mortas</th>
-                    <th>Máquina</th>
-                    <th>Finalizou?</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for data in sheet_data %}
-                <tr>
-                    <td><input type="text" value="{{ data[0] }}" disabled></td>
-                    <td><input type="text" value="{{ data[1] }}" disabled></td>
-                    <td><input type="text" value="{{ data[2] }}" disabled></td>
-                    <td><input type="text" value="{{ data[3] }}" disabled></td>
-                    <td><input type="text" value="{{ data[4] }}" disabled></td>
-                    <td><input type="text" value="{{ data[5] }}" /></td>
-                    <td><input type="text" value="{{ data[6] }}" /></td>
-                    <td>
-                        <select>
-                            <option value="" disabled hidden></option>
-                            <option value="Maq 1">Maq 1</option>
-                            <option value="Maq 2">Maq 2</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value="" disabled hidden></option>
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </td>
-                    <td><button class="botao-enviar-linha">Enviar</button></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div id= 'operadores'>
+        {% block body %}
+        {% endblock %}
     </div>
     <script src="static\js\navbar.js"></script>
 
