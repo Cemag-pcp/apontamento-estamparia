@@ -77,35 +77,62 @@
     </table>
 
     <script>
-        $(document).ready(function() {
-            // Função para enviar a linha para o backend quando o botão for clicado
-            $('.botao-enviar-linha').on('click', function() {
-                var linha = $(this).closest('tr');
-                var dadosLinha = [];
+        // $(document).ready(function() {
+        //     // Função para enviar a linha para o backend quando o botão for clicado
+        //     $('.botao-enviar-linha').on('click', function() {
+        //         var linha = $(this).closest('tr');
+        //         var dadosLinha = [];
 
-                // Itera sobre as células da linha e armazena os valores em um array
-                linha.find('input, select').each(function() {
-                    var valor = $(this).val();
-                    dadosLinha.push(valor);
-                });
+        //         // Itera sobre as células da linha e armazena os valores em um array
+        //         linha.find('input, select').each(function() {
+        //             var valor = $(this).val();
+        //             dadosLinha.push(valor);
+        //         });
 
-                // Envia a linha para o backend usando AJAX
-                $.ajax({
-                    url: '/send_row',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(dadosLinha),
-                    success: function(response) {
-                        alert(response.mensagem);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
+        //         // Envia a linha para o backend usando AJAX
+        //         $.ajax({
+        //             url: '/send_row',
+        //             type: 'POST',
+        //             contentType: 'application/json',
+        //             data: JSON.stringify(dadosLinha),
+        //             success: function(response) {
+        //                 alert(response.mensagem);
+        //             },
+        //             error: function(error) {
+        //                 console.log(error);
+        //             }
+                    
+        //         });
                 
-                location.reload(); // Atualiza a página
-            });
-        });
+        //         window.location.reload(); // Atualiza a página
+        //     });
+        // });
+
+  $(document).ready(function() {
+    $('.botao-enviar-linha').on('click', function() {
+      var linha = $(this).closest('tr');
+      var dadosLinha = [];
+
+      linha.find('input, select').each(function() {
+        var valor = $(this).val();
+        dadosLinha.push(valor);
+      });
+
+      $.ajax({
+        url: '/send_row',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dadosLinha),
+        success: function(response) {
+          alert(response.mensagem);
+          window.location.reload(); // Recarrega a página após o sucesso
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    });
+  });
 
     </script>
 </body>
