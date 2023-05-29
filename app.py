@@ -97,13 +97,13 @@ def send_row():
         att_linha(id_linha, qtReal, maquina, qtMortas, finalizou)
         print("ok, atualizou")
         
+        sheet_data, table1 = get_sheet_data_4238()
+
         #retorna mensagem de sucesso
 
         return render_template('index.html', sheet_data=sheet_data)
 
-    else:
-        sheet_data, table1 = get_sheet_data_4238()
-        return render_template('index.html', sheet_data=sheet_data)
+    return render_template('index.html', sheet_data=sheet_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
