@@ -82,9 +82,6 @@ def index():
 @app.route('/send_row', methods=['POST'])
 def send_row():
 
-    # sheet_data, table1 = get_sheet_data_4238()
-    print('teste1')
-
     if request.method == 'POST':
 
         linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
@@ -101,7 +98,7 @@ def send_row():
         print("ok, atualizou")
         
         sheet_data, table1 = get_sheet_data_4238()
-        print("teste2")
+
         #retorna mensagem de sucesso
 
         return render_template('index.html', sheet_data=sheet_data)
