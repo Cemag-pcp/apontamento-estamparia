@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sheets Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <h1>Google Sheets Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Data</th>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Qt. Prog.</th>
+                <th>Qt. Real</th>
+                <th>Mortas</th>
+                <th>Máquina</th>
+                <th>Finalizou?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if sheet_data %}
+                {% for data in sheet_data %}
+                <tr>
+                    <td><input type="text" value="{{ data[0] }}" disabled></td>
+                    <td><input type="text" value="{{ data[1] }}" disabled></td>
+                    <td><input type="text" value="{{ data[2] }}" disabled></td>
+                    <td><input type="text" value="{{ data[3] }}" disabled></td>
+                    <td><input type="text" value="{{ data[4] }}" disabled></td>
+                    <td><input type="text" value="{{ data[5] }}" required/></td>
+                    <td><input type="text" value="{{ data[6] }}" /></td>
+                    <td>
+                        <select>
+                            <option value="" disabled hidden></option>
+                            <option value="Maq 1">Maq 1</option>
+                            <option value="Maq 2">Maq 2</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option value="" disabled hidden></option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </td>
+                    <td><button class="botao-enviar-linha">Enviar</button></td>
+                </tr>
+                {% endfor %}
+            
+            {% else %}
+                <tr>
+                    <td colspan="9">Nenhum dado disponível</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+<script>
+
+  $(document).ready(function() {
+    $('.botao-enviar-linha').on('click', function() {
+      var linha = $(this).closest('tr');
+      var dadosLinha = [];
+
+      linha.find('input, select').each(function() {
+        var valor = $(this).val();
+        dadosLinha.push(valor);
+      });
+
+      $.ajax({
+        url: '/send_row_4238',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dadosLinha),
+        success: function(response) {
+          alert(response.mensagem);
+          window.location.reload(); // Recarrega a página após o sucesso
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    });
+  });
+
+</script>
+</body>
+</html>
