@@ -1,154 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets Table</title>
-    <script src="https://kit.fontawesome.com/d1807a784c.js" crossorigin="anonymous"></script>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+    </style>
 </head>
 <body>
-    <div class="navigation">
-        <ul>
-            <li class="list">
-                <a href="/">
-                    <span class="icon"><i class="fa-regular fa-4"></i><i class="fa-regular fa-2"></i><i class="fa-regular fa-1"></i><i class="fa-regular fa-7"></i></span>
-                    <span class="title">Operador 4217</span>
-                </a>
-            </li>
-            <li class="list">
-                <a href="/">
-                    <span class="icon"><i class="fa-regular fa-3"></i><i class="fa-regular fa-6"></i><i class="fa-regular fa-5"></i><i class="fa-regular fa-4"></i></span>
-                    <span class="title">Operador 3654</span>
-                </a>
-            </li>
-            <li class="list">
-                <a href="/">
-                    <span class="icon"><i class="fa-regular fa-4"></i><i class="fa-regular fa-2"></i><i class="fa-regular fa-3"></i><i class="fa-regular fa-8"></i></span>
-                    <span class="title">Operador 4238</span>
-                </a>
-            </li>
-            <li class="list">
-                <a href="/">
-                    <span class="icon"><i class="fa-regular fa-4"></i><i class="fa-regular fa-2"></i><i class="fa-solid fa-0"></i><i class="fa-solid fa-0"></i></span>
-                    <span class="title">Operador 4200</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <h1 style="position: relative; left: 5%;transform: translate(40%,0%);">Google Sheets Table</h1>
-    <table style="position: relative; left: 5%;transform: translate(20%,50%);">
+    <h1>Google Sheets Table</h1>
+    <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>Id</th>
                 <th>Data</th>
                 <th>Código</th>
                 <th>Descrição</th>
-                <th>Quantidade prog.</th>
-                <th>Quantidade real.</th>
+                <th>Qt. Prog.</th>
+                <th>Qt. Real</th>
+                <th>Mortas</th>
                 <th>Máquina</th>
-                <th>Finalizado?</th>
+                <th>Finalizou?</th>
             </tr>
         </thead>
         <tbody>
-            {% for row in sheet_data %}
-                <tr>
-                    <td>{{ row[0] }}</td>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>{{ row[4] }}</td>
-                    <td contenteditable="true">{{ row[5] }}</td>
-                    <td>
-                        <select id='dropdown1'>
-                            <option value="" disabled selected></option>
-                            <option value="opcao1">Opção 1</option>
-                            <option value="opcao2">Opção 2</option>
-                            <option value="opcao3">Opção 3</option>
-                        </select> 
-                    </td>
-                    <td>
-                        <select id='dropdown2'>
-                            <option value="" disabled selected></option>
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button onclick="sendRow({{ loop.index }})">Enviar</button>
-                    </td>
-                </tr>
+            {% for data in sheet_data %}
+            <tr>
+                <td><input type="text" value="{{ data[0] }}" disabled></td>
+                <td><input type="text" value="{{ data[1] }}" disabled></td>
+                <td><input type="text" value="{{ data[2] }}" disabled></td>
+                <td><input type="text" value="{{ data[3] }}" disabled></td>
+                <td><input type="text" value="{{ data[4] }}" disabled></td>
+                <td><input type="text" value="{{ data[5] }}" /></td>
+                <td><input type="text" value="{{ data[6] }}" /></td>
+                <td>
+                    <select>
+                        <option value="" disabled hidden></option>
+                        <option value="Maq 1">Maq 1</option>
+                        <option value="Maq 2">Maq 2</option>
+                    </select>
+                </td>
+                <td>
+                    <select>
+                        <option value="" disabled hidden></option>
+                        <option value="Sim">Sim</option>
+                        <option value="Não">Não</option>
+                    </select>
+                </td>
+                <td><button class="botao-enviar-linha">Enviar</button></td>
+            </tr>
             {% endfor %}
+            <!-- <tr>
+                <td><input type="text" value="{{ sheet_data[1][0] }}" /></td>
+                <td><input type="text" value="{{ sheet_data[1][1] }}" /></td>
+                <td><input type="text" value="{{ sheet_data[1][2] }}" /></td>
+                <td><input type="text" value="{{ sheet_data[1][3] }}" /></td>
+                <td><input type="text" value="{{ sheet_data[1][4] }}" /></td>
+                <td><input type="text" value="{{ sheet_data[1][5] }}" /></td>
+                Adicione aqui as células editáveis para a segunda linha
+                <td><button class="botao-enviar-linha">Enviar</button></td>
+            </tr> -->
+            <!-- Repita o padrão para adicionar mais linhas -->
         </tbody>
     </table>
 
-<script>
+    <script>
+        $(document).ready(function() {
+            // Função para enviar a linha para o backend quando o botão for clicado
+            $('.botao-enviar-linha').on('click', function() {
+                var linha = $(this).closest('tr');
+                var dadosLinha = [];
 
-    function sendRow(rowId) {
-        // Obter os dados da linha correspondente
-        var row = document.querySelectorAll('tr')[rowId];
-        var rowData = [];
-        row.querySelectorAll('td').forEach(function(cell) {
-            rowData.push(cell.innerText);
+                // Itera sobre as células da linha e armazena os valores em um array
+                linha.find('input, select').each(function() {
+                    var valor = $(this).val();
+                    dadosLinha.push(valor);
+                });
+
+                // Envia a linha para o backend usando AJAX
+                $.ajax({
+                    url: '/send_row',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dadosLinha),
+                    success: function(response) {
+                        alert(response.mensagem);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+                
+                location.reload(); // Atualiza a página
+            });
         });
 
-        // Obter o valor selecionado do dropdown
-        var dropdown1Value = document.getElementById('dropdown1').value;
-        var dropdown2Value = document.getElementById('dropdown2').value;
-
-        // Verificar se a coluna 5 está vazia
-        var quantidadeValue = rowData[5]; // Índice 5 representa a coluna 6
-        var maquinaValue = rowData[6];
-        var finalizouValue = rowData[7];
-
-        if (quantidadeValue === '') {
-            alert('A coluna de quantidade está vazia. Preencha o valor antes de enviar.');
-            return;
-        }
-        if (maquinaValue === '') {
-            alert('Escolha uma máquina.');
-            return;
-        }
-        if (finalizouValue === '') {
-            alert('Escolha uma opção na coluna de "Finalizou".');
-            return;
-        }
-        
-
-        // Enviar os dados para o servidor Flask
-        fetch('/send_row', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-            row_data: rowData,
-            dropdown1_value: dropdown1Value,
-            dropdown2_value: dropdown2Value
-
-
-            })
-        }).then(function(response) {
-            if (response.ok) {
-                alert('Linha enviada com sucesso!');
-                reloadPage(); // Recarregar a página
-            } else {
-                alert('Ocorreu um erro ao enviar a linha.');
-            }
-        }).catch(function(error) {
-            console.log(error);
-            alert('Ocorreu um erro ao enviar a linha.');
-        });
-    }
-
-    function reloadPage() {
-        location.reload();
-    }
-
-
-</script>
-
-
+    </script>
 </body>
 </html>
