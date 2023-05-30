@@ -12,13 +12,26 @@ menuToggle.onclick = function() {
   }
 };
 
-let list = document.querySelectorAll('.list')
-for (let i = 0; i < list.length; i++){
-    list[i].onclick = function(){
-        let j = 0;
-        while(j < list.length){
-            list[j++].className = 'list'
-        }
-        list[i].className = 'list active'
+let list = document.querySelectorAll('.list');
+
+for (let i = 0; i < list.length; i++) {
+  let link = list[i].querySelector('a');
+  let href = link.getAttribute('href');
+
+  link.onclick = function(event) {
+    event.preventDefault();
+    window.location.href = href;
+
+    for (let j = 0; j < list.length; j++) {
+      list[j].classList.remove('active');
     }
+
+    list[i].classList.add('active');
+  };
+
+  // Add the following code to check the current URL and apply the active class
+  let currentURL = window.location.pathname;
+  if (currentURL === href) {
+    list[i].classList.add('active');
+  }
 }

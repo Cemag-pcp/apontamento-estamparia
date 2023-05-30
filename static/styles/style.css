@@ -175,6 +175,10 @@ body{
     display: none;
 }
 
+.table-container {
+    width: 300px; /* Adjust the width as needed */
+  }
+
 #titulo{
     position: fixed;
     display: flex;
@@ -182,22 +186,27 @@ body{
     align-items: center;
     left: 5%;
     top: 5%;
-    transform: translate(200%,20%);
+    transform: translate(220%,20%);
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
 }
 
-#planilha{
+#planilha {
     position: fixed;
-    width: 160vh;
-    height: auto;
-    left: 5%;
-    top: 5%;
-    transform: translate(5%,70%);
-    background: #fff;
+    width: 140vh;
+    height: 600px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.7);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 2rem 3rem rgba(76, 79, 109, 0.15);
+    align-items: center;
+    overflow-y: scroll;
 }
-
+  
 table {
     border-collapse: collapse;
     left: 5%;
@@ -213,7 +222,99 @@ th, td {
     background-color: rgba(211, 211, 211, 0.322);
 }
 
-table input{
-    width: 165px;
+table input #menor{
+    width: 130px;
+    border-color: rgba(0, 0, 0, 0.1);
     height: 35px;
+    margin-top: 20px;
 }
+
+table #id{
+    width: 55px;
+    border-color: rgba(0, 0, 0, 0.1);
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #data{
+    width: 100px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #codigo{
+    width: 70px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #descricao{
+    width: 435px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #qt_prog{
+    width: 60px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #qt_real{
+    width: 60px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #mortas{
+    width: 60px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #motivo{
+    width: 100px;
+    height: 35px;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+table #maquina{
+    width: 70px;
+    height: 35px;
+    margin-top: 20px;
+    border-color: rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+}
+
+table #finalizou{
+    width: 60px;
+    height: 35px;
+    margin-top: 20px;
+    border-color: rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+}
+
+table button{
+    width: 75px;
+    border-color: rgba(0, 0, 0, 0.1);
+    height: 35px;
+    margin-top: 20px;
+}
+
+.message-success {
+    background-color: #c6efce;
+    color: #008000;
+  }
+
+  .message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }

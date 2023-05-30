@@ -6,43 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
     <script src="https://kit.fontawesome.com/d1807a784c.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Google Sheets Table</title>
+    <title>Apontamento Estamparia</title>
 </head>
 <body>
     <div class="container">
         <div class="navigation">
             <ul>
-                <li class="list active">
+                <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="/4217">
+                    <a href="/" id="link-4217" class="link-active">
                         <span class="icon"><i class="fa-sharp fa-solid fa-4"></i><i class="fa-sharp fa-solid fa-2"></i><i class="fa-sharp fa-solid fa-1"></i><i class="fa-sharp fa-solid fa-7"></i></span>
-                        <span class="title">Operador</span>
                     </a>
                 </li>
                 <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="/3654">
+                    <a href="/3654" id="link-3654" class="link-active">
                         <span class="icon"><i class="fa-sharp fa-solid fa-3"></i><i class="fa-sharp fa-solid fa-6"></i><i class="fa-sharp fa-solid fa-5"></i><i class="fa-sharp fa-solid fa-4"></i></span>
-                        <span class="title">Operador</span>
                     </a>
                 </li>
                 <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="/4238">
+                    <a href="/4238" id="link-4238" class="link-active">
                         <span class="icon"><i class="fa-sharp fa-solid fa-4"></i><i class="fa-sharp fa-solid fa-2"></i><i class="fa-sharp fa-solid fa-3"></i><i class="fa-sharp fa-solid fa-8"></i></span>
-                        <span class="title">Operador</span>
                     </a>
                 </li>
                 <li class="list">
                     <b></b>
                     <b></b>
-                    <a href="/4200">
+                    <a href="/4200" id="link-4200" class="link-active">
                         <span class="icon"><i class="fa-sharp fa-solid fa-4"></i><i class="fa-sharp fa-solid fa-2"></i><i class="fa-sharp fa-solid fa-0"></i><i class="fa-sharp fa-solid fa-0"></i></span>
-                        <span class="title">Operador</span>
                     </a>
                 </li>
             </ul>
@@ -57,8 +52,8 @@
         {% block body %}
         {% endblock %}
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="static\js\navbar.js"></script>
-
     <script>
         $(document).ready(function() {
             // Função para enviar a linha para o backend quando o botão for clicado

@@ -37,8 +37,10 @@ def operador_4238():
         
         table1.reset_index(drop=True)
 
-        table1 = table1.loc[(table1['CÓDIGO'] != '') & (table1['MÁQUINA'] == '')]
+        table1.fillna('',inplace=True)
 
+        table1 = table1[(table1['MÁQUINA'] == '') & (table1['CÓDIGO'] != '')]
+                        
         table1 = table1[(table1['Finalizou?'] == 'Não') | (table1['Finalizou?'] == '')]
 
         values = table1.values.tolist()
@@ -54,7 +56,7 @@ def operador_4238():
 @app.route('/send_row_4238', methods=['POST'])
 def send_row_4238():
 
-    def att_linha(id, qtReal, maquina, qtMortas, finalizou):
+    def att_linha(id, qtReal, maquina, qtMortas, finalizou,motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
                 "https://www.googleapis.com/auth/drive"]
@@ -86,6 +88,8 @@ def send_row_4238():
         wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
         wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
+        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
+
 
     if request.method == 'POST':
 
@@ -93,13 +97,14 @@ def send_row_4238():
 
         id_linha = linha[0]
         qtReal = linha[5]
-        maquina = linha[7]
+        maquina = linha[8]
         qtMortas = linha[6]
-        finalizou = linha[8]
+        finalizou = linha[9]
+        motivo = linha[7]
 
-        print(id_linha, qtReal, maquina, qtReal, finalizou)
+        print(linha)
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou)
+        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
         print("ok, atualizou")
         
         #sheet_data, table1 = get_sheet_data_4238()
@@ -108,7 +113,7 @@ def send_row_4238():
         return jsonify({'mensagem': 'Dados enviados com sucesso'})
 
 # Rota inicial da aplicação
-@app.route('/4217')
+@app.route('/')
 def operador_4217():
 
     def get_sheet_data_4217():
@@ -135,6 +140,8 @@ def operador_4217():
         
         table1.reset_index(drop=True)
 
+        table1.fillna('',inplace=True)
+
         table1 = table1.loc[(table1['CÓDIGO'] != '') & (table1['MÁQUINA'] == '')]
 
         table1 = table1[(table1['Finalizou?'] == 'Não') | (table1['Finalizou?'] == '')]
@@ -152,7 +159,7 @@ def operador_4217():
 @app.route('/send_row_4217', methods=['POST'])
 def send_row_4217():
 
-    def att_linha(id, qtReal, maquina, qtMortas, finalizou):
+    def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
                 "https://www.googleapis.com/auth/drive"]
@@ -184,6 +191,7 @@ def send_row_4217():
         wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
         wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
+        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
     if request.method == 'POST':
 
@@ -191,13 +199,14 @@ def send_row_4217():
 
         id_linha = linha[0]
         qtReal = linha[5]
-        maquina = linha[7]
+        maquina = linha[8]
         qtMortas = linha[6]
-        finalizou = linha[8]
+        finalizou = linha[9]
+        motivo = linha[7]
 
         print(id_linha, qtReal, maquina, qtReal, finalizou)
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou)
+        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
         print("ok, atualizou")
         
         #sheet_data, table1 = get_sheet_data_4238()
@@ -233,6 +242,8 @@ def operador_3654():
         
         table1.reset_index(drop=True)
 
+        table1.fillna('',inplace=True)
+
         table1 = table1.loc[(table1['CÓDIGO'] != '') & (table1['MÁQUINA'] == '')]
 
         table1 = table1[(table1['Finalizou?'] == 'Não') | (table1['Finalizou?'] == '')]
@@ -250,7 +261,7 @@ def operador_3654():
 @app.route('/send_row_4217', methods=['POST'])
 def send_row_3654():
 
-    def att_linha(id, qtReal, maquina, qtMortas, finalizou):
+    def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
                 "https://www.googleapis.com/auth/drive"]
@@ -282,6 +293,7 @@ def send_row_3654():
         wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
         wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
+        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
     if request.method == 'POST':
 
@@ -289,13 +301,14 @@ def send_row_3654():
 
         id_linha = linha[0]
         qtReal = linha[5]
-        maquina = linha[7]
+        maquina = linha[8]
         qtMortas = linha[6]
-        finalizou = linha[8]
+        finalizou = linha[9]
+        motivo = linha[7]
 
         print(id_linha, qtReal, maquina, qtReal, finalizou)
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou)
+        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou,motivo)
         print("ok, atualizou")
         
         #sheet_data, table1 = get_sheet_data_4238()
@@ -331,6 +344,8 @@ def operador_4200():
         
         table1.reset_index(drop=True)
 
+        table1.fillna('',inplace=True)
+
         table1 = table1.loc[(table1['CÓDIGO'] != '') & (table1['MÁQUINA'] == '')]
 
         table1 = table1[(table1['Finalizou?'] == 'Não') | (table1['Finalizou?'] == '')]
@@ -348,7 +363,7 @@ def operador_4200():
 @app.route('/send_row_4200', methods=['POST'])
 def send_row_4200():
 
-    def att_linha(id, qtReal, maquina, qtMortas, finalizou):
+    def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
                 "https://www.googleapis.com/auth/drive"]
@@ -380,6 +395,7 @@ def send_row_4200():
         wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
         wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
+        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
     if request.method == 'POST':
 
@@ -387,13 +403,14 @@ def send_row_4200():
 
         id_linha = linha[0]
         qtReal = linha[5]
-        maquina = linha[7]
+        maquina = linha[8]
         qtMortas = linha[6]
-        finalizou = linha[8]
+        finalizou = linha[9]
+        motivo = linha[7]
 
-        print(id_linha, qtReal, maquina, qtReal, finalizou)
+        print(id_linha, qtReal, maquina, qtReal, finalizou, motivo)
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou)
+        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
         print("ok, atualizou")
         
         #sheet_data, table1 = get_sheet_data_4238()
