@@ -51,7 +51,7 @@
                                 <option value="Não">Não</option>
                             </select>
                         </td>
-                        <td><button class="botao-enviar-linha" onclick="showLoading()">Enviar</button></td>
+                        <td><button class="botao-enviar-linha">Enviar</button></td>
                     </tr>
                     {% endfor %}
 
@@ -64,33 +64,67 @@
         </table>
     </div>
   </div>
+
 <script>
+    $(document).ready(function() {
+        $('.botao-enviar-linha').on('click', function() {
+            // Exibir o indicador de carregamento
+            $("#loading-overlay").show();
 
-  $(document).ready(function() {
-    $('.botao-enviar-linha').on('click', function() {
-      var linha = $(this).closest('tr');
-      var dadosLinha = [];
+            var linha = $(this).closest('tr');
+            var dadosLinha = [];
 
-      linha.find('input, select').each(function() {
-        var valor = $(this).val();
-        dadosLinha.push(valor);
-      });
+            linha.find('input, select').each(function() {
+                var valor = $(this).val();
+                dadosLinha.push(valor);
+            });
 
-      $.ajax({
-        url: '/send_row_4217',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(dadosLinha),
-        success: function(response) {
-          alert(response.mensagem);
-          window.location.reload(); // Recarrega a página após o sucesso
-        },
-        error: function(error) {
-          console.log(error);
-        }
-      });
+            $.ajax({
+                url: '/send_row_4217',
+                method: 'POST',
+                data: JSON.stringify(dadosLinha),
+                contentType: 'application/json',
+                complete: function() {
+                    // Ocultar o indicador de carregamento
+                    $("#loading-overlay").hide();
+                }
+            });
+        });
     });
-  });
-
 </script>
+
+<style>
+    /* Estilos para o indicador de carregamento */
+    #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    
+    #loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #fff;
+        border-top: 3px solid #f00;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+    
+<div id="loading-overlay" style="display: none;">
+    <div id="loading-spinner"></div>
+</div>
+
 {% endblock %}

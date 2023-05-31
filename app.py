@@ -11,8 +11,10 @@ app.secret_key = "apontamentoestamparia"
 # Função para obter os dados da planilha
 
 # Rota inicial da aplicação
-@app.route('/4238')
+@app.route('/4238', methods=['GET'])
 def operador_4238():
+
+    time.sleep(3)
 
     def get_sheet_data_4238():
 
@@ -56,7 +58,7 @@ def operador_4238():
 # Rota para enviar a linha para outra planilha
 @app.route('/send_row_4238', methods=['POST'])
 def send_row_4238():
-
+    
     def att_linha(id, qtReal, maquina, qtMortas, finalizou,motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -91,9 +93,8 @@ def send_row_4238():
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
         wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
-
     linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
-
+    
     id_linha = linha[0]
     qtReal = linha[5]
     maquina = linha[8]
@@ -118,11 +119,13 @@ def send_row_4238():
         flash("O id foi enviado para o banco de dados com sucesso")
 
     #retorna mensagem de sucesso
-    return jsonify({'message':'success'})
+    return jsonify({'message': 'success', 'reload': True})
 
 # Rota inicial da aplicação
-@app.route('/')
+@app.route('/', methods=['GET'])
 def operador_4217():
+    
+    time.sleep(5)
 
     def get_sheet_data_4217():
 
@@ -201,32 +204,34 @@ def send_row_4217():
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
         wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
-    if request.method == 'POST':
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end   
+    
+    print(linha)
 
-        linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
 
-        id_linha = linha[0]
-        qtReal = linha[5]
-        maquina = linha[8]
-        qtMortas = linha[6]
-        finalizou = linha[9]
-        motivo = linha[7]
+    if finalizou == 'Não':
+        maquina = ''
 
-        if finalizou == 'Não':
-            maquina = ''
+    att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
+    
+    if finalizou == 'Sim':  # If the 'finalizou' flag is True
+        flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
+    else:
+        flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
-        
-        if finalizou == 'Sim':  # If the 'finalizou' flag is True
-            flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
-        else:
-            flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
-
-        return redirect(url_for(operador_4217))
+    return jsonify({'message': 'success', 'reload': True})
 
 # Rota inicial da aplicação
-@app.route('/3654')
+@app.route('/3654', methods=['GET'])
 def operador_3654():
+
+    time.sleep(5)
 
     def get_sheet_data_3654():
 
@@ -305,41 +310,41 @@ def send_row_3654():
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
         wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
-    if request.method == 'POST':
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
 
-        linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
 
-        id_linha = linha[0]
-        qtReal = linha[5]
-        maquina = linha[8]
-        qtMortas = linha[6]
-        finalizou = linha[9]
-        motivo = linha[7]
+    if finalizou == 'Não':
+        maquina = ''
 
-        if finalizou == 'Não':
-            maquina = ''
+    print(id_linha, qtReal, maquina, qtReal, finalizou)
 
-        print(id_linha, qtReal, maquina, qtReal, finalizou)
+    att_linha(id_linha, qtReal, maquina, qtMortas, finalizou,motivo)
+    print("ok, atualizou")
+    
+    #sheet_data, table1 = get_sheet_data_4238()
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou,motivo)
-        print("ok, atualizou")
-        
-        #sheet_data, table1 = get_sheet_data_4238()
+    #retorna mensagem de sucesso
+    if finalizou == 'Sim':  # If the 'finalizou' flag is True
+        flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
+    else:
+        flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
 
-        #retorna mensagem de sucesso
-        if finalizou == 'Sim':  # If the 'finalizou' flag is True
-            flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
-        else:
-            flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
+    #sheet_data, table1 = get_sheet_data_4238()
 
-        #sheet_data, table1 = get_sheet_data_4238()
-
-        #retorna mensagem de sucesso
-        return redirect(url_for(operador_3654))
+    #retorna mensagem de sucesso
+    return jsonify({'message': 'success', 'reload': True})
 
 # Rota inicial da aplicação
-@app.route('/4200')
+@app.route('/4200', )
 def operador_4200():
+
+    time.sleep(5)
 
     def get_sheet_data_4200():
 
@@ -418,28 +423,29 @@ def send_row_4200():
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
         wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
-    if request.method == 'POST':
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
 
-        linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
 
-        id_linha = linha[0]
-        qtReal = linha[5]
-        maquina = linha[8]
-        qtMortas = linha[6]
-        finalizou = linha[9]
-        motivo = linha[7]
+    if finalizou == 'Não':
+        maquina = ''
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
+    att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
 
-        if finalizou == 'Sim':  # If the 'finalizou' flag is True
-            flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
-        else:
-            flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
+    if finalizou == 'Sim':  # If the 'finalizou' flag is True
+        flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
+    else:
+        flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
 
-        #sheet_data, table1 = get_sheet_data_4238()
+    #sheet_data, table1 = get_sheet_data_4238()
 
-        #retorna mensagem de sucesso
-        return redirect(url_for(operador_4200))
+    #retorna mensagem de sucesso
+    return jsonify({'message': 'success', 'reload': True})
     
 if __name__ == '__main__':
     app.run(debug=True)
