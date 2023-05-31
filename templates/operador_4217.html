@@ -29,13 +29,19 @@
                         <td><input id = 'descricao' type="text" value="{{ data[3] }}" disabled style="background-color: rgb(241, 240, 240);"></td>
                         <td><input id = 'qt_prog' type="text" value="{{ data[4] }}" disabled style="background-color: rgb(241, 240, 240);"></td>
                         <td><input id = 'qt_real' type="text" value="{{ data[5] }}" /></td>
-                        <td><input id = 'mortas' type="text" value="{{ data[6] }}" /></td>
+                        <td><input id = 'mortas' type="text" value="{{ data[8] }}" /></td>
                         <td><input id = 'motivo' type="text" value="{{ data[9] }}" /></td>
                         <td>
                             <select id = 'maquina'>
-                                <option value="" disabled hidden></option>
-                                <option value="Maq 1">Maq 1</option>
-                                <option value="Maq 2">Maq 2</option>
+                              <option value="" disabled hidden></option>
+                              <option value="VIRADEIRA 1">VIRADEIRA 1</option>
+                              <option value="VIRADEIRA 2">VIRADEIRA 2</option>
+                              <option value="VIRADEIRA 3">VIRADEIRA 3</option>
+                              <option value="VIRADEIRA 4">VIRADEIRA 4</option>
+                              <option value="VIRADEIRA 5">VIRADEIRA 5</option>
+                              <option value="PRENSA">PRENSA</option>
+                              <option value="FORJARIA">FORJARIA</option>
+                              <option value="MONTAGEM">MONTAGEM</option>
                             </select>
                         </td>
                         <td>
@@ -45,7 +51,7 @@
                                 <option value="Não">Não</option>
                             </select>
                         </td>
-                        <td><button class="botao-enviar-linha">Enviar</button></td>
+                        <td><button class="botao-enviar-linha" onclick="showLoading()">Enviar</button></td>
                     </tr>
                     {% endfor %}
 

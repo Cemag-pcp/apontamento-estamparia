@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, jsonify,redirect, url_for
+from flask import Flask, render_template, request, jsonify,redirect, url_for,flash
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import time
 
 app = Flask(__name__)
+app.secret_key = "apontamentoestamparia"
 # app.config.from_pyfile('config.py')
 
 # Função para obter os dados da planilha
@@ -22,7 +23,7 @@ def operador_4238():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 4238'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -65,7 +66,7 @@ def send_row_4238():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 4238'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -91,26 +92,33 @@ def send_row_4238():
         wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
 
-    if request.method == 'POST':
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
 
-        linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
 
-        id_linha = linha[0]
-        qtReal = linha[5]
-        maquina = linha[8]
-        qtMortas = linha[6]
-        finalizou = linha[9]
-        motivo = linha[7]
+    print(linha)
+    print(finalizou)
 
-        print(linha)
+    if finalizou == 'Não':
+        maquina = ''
+    
+    print(maquina)
 
-        att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
-        print("ok, atualizou")
-        
-        #sheet_data, table1 = get_sheet_data_4238()
+    att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
+    
+    if finalizou == 'Não':  # If the 'finalizou' flag is True
+        print('entrou')
+        flash("O id foi enviado para o banco de dados porém não foi finalizado")
+    else:
+        flash("O id foi enviado para o banco de dados com sucesso")
 
-        #retorna mensagem de sucesso
-        return jsonify({'mensagem': 'Dados enviados com sucesso'})
+    #retorna mensagem de sucesso
+    return jsonify({'message':'success'})
 
 # Rota inicial da aplicação
 @app.route('/')
@@ -125,7 +133,7 @@ def operador_4217():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 4217'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -147,7 +155,7 @@ def operador_4217():
         table1 = table1[(table1['Finalizou?'] == 'Não') | (table1['Finalizou?'] == '')]
 
         values = table1.values.tolist()
-        
+
         return values, table1
 
     sheet_data, table1 = get_sheet_data_4217()
@@ -168,7 +176,7 @@ def send_row_4217():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 4217'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -204,15 +212,17 @@ def send_row_4217():
         finalizou = linha[9]
         motivo = linha[7]
 
-        print(id_linha, qtReal, maquina, qtReal, finalizou)
+        if finalizou == 'Não':
+            maquina = ''
 
         att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
-        print("ok, atualizou")
         
-        #sheet_data, table1 = get_sheet_data_4238()
+        if finalizou == 'Sim':  # If the 'finalizou' flag is True
+            flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
+        else:
+            flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
 
-        #retorna mensagem de sucesso
-        return jsonify({'mensagem': 'Dados enviados com sucesso'})
+        return redirect(url_for(operador_4217))
 
 # Rota inicial da aplicação
 @app.route('/3654')
@@ -227,7 +237,7 @@ def operador_3654():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 3654'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -258,7 +268,7 @@ def operador_3654():
     return render_template('operador_3654.html', sheet_data=sheet_data)
 
 # Rota para enviar a linha para outra planilha
-@app.route('/send_row_4217', methods=['POST'])
+@app.route('/send_row_3654', methods=['POST'])
 def send_row_3654():
 
     def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
@@ -270,8 +280,8 @@ def send_row_3654():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
-        worksheet1 = 'OPERADOR 4217'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
+        worksheet1 = 'OPERADOR 3654'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
         list1 = wks1.get()
@@ -306,6 +316,9 @@ def send_row_3654():
         finalizou = linha[9]
         motivo = linha[7]
 
+        if finalizou == 'Não':
+            maquina = ''
+
         print(id_linha, qtReal, maquina, qtReal, finalizou)
 
         att_linha(id_linha, qtReal, maquina, qtMortas, finalizou,motivo)
@@ -314,7 +327,15 @@ def send_row_3654():
         #sheet_data, table1 = get_sheet_data_4238()
 
         #retorna mensagem de sucesso
-        return jsonify({'mensagem': 'Dados enviados com sucesso'})
+        if finalizou == 'Sim':  # If the 'finalizou' flag is True
+            flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
+        else:
+            flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
+
+        #sheet_data, table1 = get_sheet_data_4238()
+
+        #retorna mensagem de sucesso
+        return redirect(url_for(operador_3654))
 
 # Rota inicial da aplicação
 @app.route('/4200')
@@ -329,7 +350,7 @@ def operador_4200():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 4200'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -372,7 +393,7 @@ def send_row_4200():
         client = gspread.authorize(credentials)
         sa = gspread.service_account('service_account.json')    
 
-        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) e RQ CQ-015-000 (Inspeção da Estamparia)'
+        name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
         worksheet1 = 'OPERADOR 4200'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
@@ -408,16 +429,17 @@ def send_row_4200():
         finalizou = linha[9]
         motivo = linha[7]
 
-        print(id_linha, qtReal, maquina, qtReal, finalizou, motivo)
-
         att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
-        print("ok, atualizou")
-        
+
+        if finalizou == 'Sim':  # If the 'finalizou' flag is True
+            flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
+        else:
+            flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
+
         #sheet_data, table1 = get_sheet_data_4238()
 
         #retorna mensagem de sucesso
-        return jsonify({'mensagem': 'Dados enviados com sucesso'})
-
-
+        return redirect(url_for(operador_4200))
+    
 if __name__ == '__main__':
     app.run(debug=True)

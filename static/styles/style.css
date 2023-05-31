@@ -19,6 +19,7 @@ body{
 }
 
 .navigation{
+    z-index: 9998;
     position: fixed;
     width: 75px;
     height: 100%;
@@ -29,7 +30,7 @@ body{
     background: rgb(252, 126, 64);
     transition: 0.5s;
     display: none;
-    overflow-x: hidden;
+    overflow-x:auto;
 }
 
 .navigation.active {
@@ -141,6 +142,7 @@ body{
 }
 
 .toggle{
+    z-index: 9999;
     position: fixed;
     right: 30px;
     top: 30px;
@@ -194,7 +196,7 @@ body{
 
 #planilha {
     position: fixed;
-    width: 140vh;
+    width: 145vh;
     height: 600px;
     left: 50%;
     top: 50%;
@@ -206,7 +208,7 @@ body{
     align-items: center;
     overflow-y: scroll;
 }
-  
+
 table {
     border-collapse: collapse;
     left: 5%;
@@ -269,6 +271,7 @@ table #qt_real{
     width: 60px;
     height: 35px;
     margin-top: 20px;
+    border-color: rgba(0, 0, 0, 0.1);
     padding-left: 10px;
 }
 
@@ -276,6 +279,7 @@ table #mortas{
     width: 60px;
     height: 35px;
     margin-top: 20px;
+    border-color: rgba(0, 0, 0, 0.1);
     padding-left: 10px;
 }
 
@@ -283,11 +287,12 @@ table #motivo{
     width: 100px;
     height: 35px;
     margin-top: 20px;
+    border-color: rgba(0, 0, 0, 0.1);
     padding-left: 10px;
 }
 
 table #maquina{
-    width: 70px;
+    width: 110px;
     height: 35px;
     margin-top: 20px;
     border-color: rgba(0, 0, 0, 0.1);
@@ -309,12 +314,28 @@ table button{
     margin-top: 20px;
 }
 
-.message-success {
-    background-color: #c6efce;
-    color: #008000;
+table button:hover {
+    background-color: #aaaaaa;
+    color: #fff;
   }
 
-  .message-error {
-    background-color: #f8d7da;
-    color: #721c24;
+  .loading{
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    z-index: 9999;
+    left: 5%;
+    top: 5%;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: white;
+    transform: translate(-5%,-5%);
+    width: 100%;
+    height: 100.9vh;
+  }
+  
+  .centralize{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }

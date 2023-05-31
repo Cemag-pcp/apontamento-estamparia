@@ -1,5 +1,26 @@
 {% extends "index.html" %}
 {% block body %}
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash">
+      {% for message in messages %}
+        {% if message == "O id foi enviado para o banco de dados porém não foi finalizado" %}
+          <div class="alert alert-success">
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Success! </strong> {{ message }}
+          </div>
+        {% else %}
+          <div class="alert alert-success">
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Danger! </strong> {{ message }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+
   <div class="table-container">
     <h1 id = 'titulo'>Operador 4238</h1>
     <div id ='planilha'>
@@ -28,13 +49,19 @@
                         <td><input id = 'descricao' type="text" value="{{ data[3] }}" disabled style="background-color: rgb(241, 240, 240);"></td>
                         <td><input id = 'qt_prog' type="text" value="{{ data[4] }}" disabled style="background-color: rgb(241, 240, 240);"></td>
                         <td><input id = 'qt_real' type="text" value="{{ data[5] }}" /></td>
-                        <td><input id = 'mortas' type="text" value="{{ data[6] }}" /></td>
+                        <td><input id = 'mortas' type="text" value="{{ data[8] }}" /></td>
                         <td><input id = 'motivo' type="text" value="{{ data[9] }}" /></td>
                         <td>
                             <select id = 'maquina'>
-                                <option value="" disabled hidden></option>
-                                <option value="Maq 1">Maq 1</option>
-                                <option value="Maq 2">Maq 2</option>
+                              <option value="" selected disabled hidden></option>
+                              <option value="VIRADEIRA 1">VIRADEIRA 1</option>
+                              <option value="VIRADEIRA 2">VIRADEIRA 2</option>
+                              <option value="VIRADEIRA 3">VIRADEIRA 3</option>
+                              <option value="VIRADEIRA 4">VIRADEIRA 4</option>
+                              <option value="VIRADEIRA 5">VIRADEIRA 5</option>
+                              <option value="PRENSA">PRENSA</option>
+                              <option value="FORJARIA">FORJARIA</option>
+                              <option value="MONTAGEM">MONTAGEM</option>
                             </select>
                         </td>
                         <td>
@@ -44,7 +71,7 @@
                                 <option value="Não">Não</option>
                             </select>
                         </td>
-                        <td><button class="botao-enviar-linha">Enviar</button></td>
+                        <td><button class="botao-enviar-linha" onclick="showLoading()">Enviar</button></td>
                     </tr>
                     {% endfor %}
 
@@ -58,7 +85,6 @@
     </div>
   </div>
 
-  
 <script>
 
   $(document).ready(function() {
@@ -77,12 +103,12 @@
         contentType: 'application/json',
         data: JSON.stringify(dadosLinha),
         success: function(response) {
-          alert(response.mensagem);
-          window.location.reload(); // Recarrega a página após o sucesso
+            location.reload(); // Reload the page
         },
         error: function(error) {
           console.log(error);
-        }
+        }, 
+        complete: showLoading()
       });
     });
   });
