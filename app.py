@@ -113,10 +113,9 @@ def send_row_4238():
     att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
     
     if finalizou == 'Não':  # If the 'finalizou' flag is True
-        print('entrou')
-        flash("O id foi enviado para o banco de dados porém não foi finalizado")
+        flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", 'success')
     else:
-        flash("O id foi enviado para o banco de dados com sucesso")
+        flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", 'success')
 
     #retorna mensagem de sucesso
     return jsonify({'message': 'success', 'reload': True})
@@ -322,22 +321,17 @@ def send_row_3654():
     if finalizou == 'Não':
         maquina = ''
 
-    print(id_linha, qtReal, maquina, qtReal, finalizou)
+    print(id_linha, qtReal, maquina, qtReal, finalizou,motivo)
 
     att_linha(id_linha, qtReal, maquina, qtMortas, finalizou,motivo)
-    print("ok, atualizou")
-    
-    #sheet_data, table1 = get_sheet_data_4238()
 
-    #retorna mensagem de sucesso
-    if finalizou == 'Sim':  # If the 'finalizou' flag is True
+    print("ok, atualizou")
+
+    if finalizou == 'Sim':
         flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
     else:
-        flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
+        flash(f"O id {id_linha} foi enviado para o banco de dados, porém não foi finalizado", category='info')
 
-    #sheet_data, table1 = get_sheet_data_4238()
-
-    #retorna mensagem de sucesso
     return jsonify({'message': 'success', 'reload': True})
 
 # Rota inicial da aplicação

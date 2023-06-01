@@ -1,27 +1,17 @@
 {% extends "index.html" %}
 {% block body %}
 
-  {% with messages = get_flashed_messages() %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <ul class="flash">
-      {% for message in messages %}
-        {% if message == "O id foi enviado para o banco de dados porém não foi finalizado" %}
-          <div class="alert alert-success">
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Success! </strong> {{ message }}
-          </div>
+      {% for category, message in messages %}
+        {% if message == "O id {id_linha} foi enviado para o banco de dados porém não foi finalizado" %}
+          <div class="alert {{ category }}"> {{ message|capitalize }} </div>
         {% else %}
-          <div class="alert alert-success">
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Danger! </strong> {{ message }}
-          </div>
+          <div class="alert {{ category }}"> {{ message|capitalize }} </div>
         {% endif %}
       {% endfor %}
-    </ul>
   {% endif %}
   {% endwith %}
-
-  <div class="table-container">
     <h1 id = 'titulo'>Operador 4238</h1>
     <div id ='planilha'>
         <table>
@@ -53,7 +43,7 @@
                         <td><input id = 'motivo' type="text" value="{{ data[9] }}" /></td>
                         <td>
                             <select id = 'maquina'>
-                              <option value="" selected disabled hidden></option>
+                              <option value="" selected hidden></option>
                               <option value="VIRADEIRA 1">VIRADEIRA 1</option>
                               <option value="VIRADEIRA 2">VIRADEIRA 2</option>
                               <option value="VIRADEIRA 3">VIRADEIRA 3</option>
@@ -66,7 +56,7 @@
                         </td>
                         <td>
                             <select id = 'finalizou'>
-                                <option value="" disabled hidden></option>
+                                <option value="" selected hidden></option>
                                 <option value="Sim">Sim</option>
                                 <option value="Não">Não</option>
                             </select>
@@ -83,7 +73,6 @@
             </tbody>
         </table>
     </div>
-  </div>
 
   <script>
     $(document).ready(function() {

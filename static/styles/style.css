@@ -193,20 +193,53 @@ body{
     font-size: 40px;
     font-weight: 600;
 }
+@media (max-width: 1450px) { /* Tamanho da tela de celular */
+    #titulo {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 5%;
+        top: 5%;
+        transform: translate(10%,20%);
+        font-family: 'Poppins', sans-serif;
+        font-size: 30px;
+        font-weight: 600;
+  }
+}
 
 #planilha {
-    position: fixed;
+    position: relative;
     width: 145vh;
     height: 600px;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 30%);
     background: rgba(255, 255, 255, 0.7);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 2rem 3rem rgba(76, 79, 109, 0.15);
     align-items: center;
     overflow-y: scroll;
+    overflow-x: auto;
+}
+
+@media (max-width: 1000px) { /* Tamanho da tela de celular */
+    #planilha {
+        position: relative;
+        width: 65vh;
+        height: 880px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, 20%);
+        background: rgba(255, 255, 255, 0.7);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 2rem 3rem rgba(76, 79, 109, 0.15);
+        align-items: center;
+        overflow-y: scroll;
+        overflow-x: auto;
+  }
 }
 
 table {
@@ -294,6 +327,7 @@ table #motivo{
 table #maquina{
     width: 110px;
     height: 35px;
+    background: #fff;
     margin-top: 20px;
     border-color: rgba(0, 0, 0, 0.1);
     padding-left: 10px;
@@ -302,6 +336,7 @@ table #maquina{
 table #finalizou{
     width: 60px;
     height: 35px;
+    background: #fff;
     margin-top: 20px;
     border-color: rgba(0, 0, 0, 0.1);
     padding-left: 10px;
@@ -339,3 +374,49 @@ table button:hover {
     justify-content: center;
     align-items: center;
   }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  
+  .alert{
+    width: 660px;
+    animation: fadeOut 10s forwards;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    opacity: 0;
+    position: fixed;
+    z-index: 3;
+    background-color: rgba(142, 255, 142, 0.6);
+    left: 5%;
+    top:5%;
+    transform: translate(70%, 160%);
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 1450px) { /* Tamanho da tela de celular */
+    .alert {
+        width: 660px;
+        animation: fadeOut 10s forwards;
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+        opacity: 0;
+        position: fixed;
+        z-index: 3;
+        background-color: rgba(142, 255, 142, 0.6);
+        left: 5%;
+        top:5%;
+        transform: translate(0%, 160%);
+        padding: 10px;
+        border-radius: 20px;
+  }
+  }
+
