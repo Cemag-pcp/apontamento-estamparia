@@ -14,7 +14,7 @@ app.secret_key = "apontamentoestamparia"
 @app.route('/4238', methods=['GET'])
 def operador_4238():
 
-    time.sleep(3)
+    time.sleep(5)
 
     def get_sheet_data_4238():
 
