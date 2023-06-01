@@ -75,8 +75,8 @@
     </div>
   </div>
 
-<script>
-  $(document).ready(function() {
+  <script>
+    $(document).ready(function() {
         $('.botao-enviar-linha').on('click', function() {
             // Exibir o indicador de carregamento
             $("#loading-overlay").show();
@@ -97,13 +97,12 @@
                 complete: function() {
                     // Ocultar o indicador de carregamento
                     $("#loading-overlay").hide();
-                    
                     location.reload();
                 }
             });
         });
+
     });
-    
 </script>
 
 <style>

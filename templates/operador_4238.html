@@ -74,7 +74,7 @@
         </table>
     </div>
 
-  <script>
+<script>
     $(document).ready(function() {
         $('.botao-enviar-linha').on('click', function() {
             // Exibir o indicador de carregamento
@@ -96,9 +96,11 @@
                 complete: function() {
                     // Ocultar o indicador de carregamento
                     $("#loading-overlay").hide();
+                    location.reload();
                 }
             });
         });
+
     });
 </script>
 

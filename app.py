@@ -3,6 +3,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import time
+from gspread_formatting import CellFormat, format_cell_range
 
 app = Flask(__name__)
 app.secret_key = "apontamentoestamparia"
@@ -11,10 +12,8 @@ app.secret_key = "apontamentoestamparia"
 # Função para obter os dados da planilha
 
 # Rota inicial da aplicação
-@app.route('/4238', methods=['GET'])
+@app.route('/4238')
 def operador_4238():
-
-    time.sleep(5)
 
     def get_sheet_data_4238():
 
@@ -51,6 +50,7 @@ def operador_4238():
         return values, table1
 
     sheet_data, table1 = get_sheet_data_4238()
+    
     print(table1)
 
     return render_template('operador_4238.html', sheet_data=sheet_data)
@@ -59,6 +59,15 @@ def operador_4238():
 @app.route('/send_row_4238', methods=['POST'])
 def send_row_4238():
     
+    linha = request.get_json()  # Recebe os dados da linha enviados pelo front-end
+    
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
+
     def att_linha(id, qtReal, maquina, qtMortas, finalizou,motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -87,23 +96,33 @@ def send_row_4238():
 
         linha_planilha = table1.index[0]
 
-        wks1.update("F" + str(linha_planilha + 1), qtReal) # qt real
-        wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
-        wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
-        wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
-        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
+        # Verifique se a linha foi encontrada
+            # Atualize as células desejadas em lote
+        updates = [
+            {"range": "F" + str(linha_planilha + 1), "values": [[qtReal]]},
+            {"range": "I" + str(linha_planilha + 1), "values": [[qtMortas]]},
+            {"range": "G" + str(linha_planilha + 1), "values": [[maquina]]},
+            {"range": "M" + str(linha_planilha + 1), "values": [[finalizou]]},
+            {"range": "J" + str(linha_planilha + 1), "values": [[motivo]]},
+        ]
+        wks1.batch_update(updates)
 
-    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
-    
-    id_linha = linha[0]
-    qtReal = linha[5]
-    maquina = linha[8]
-    qtMortas = linha[6]
-    finalizou = linha[9]
-    motivo = linha[7]
+        list1 = wks1.get()
 
-    print(linha)
-    print(finalizou)
+        header = wks1.row_values(4)
+
+        table1 = pd.DataFrame(list1)     
+        table1 = table1.set_axis(header, axis=1)
+
+        table1 = table1.iloc[4:]
+        
+        table1.reset_index(drop=True)
+
+        table1 = table1[table1['ID'] == id]
+
+        linha_planilha = table1.index[0]
+
+        print(table1)
 
     if finalizou == 'Não':
         maquina = ''
@@ -124,8 +143,6 @@ def send_row_4238():
 @app.route('/', methods=['GET'])
 def operador_4217():
     
-    time.sleep(5)
-
     def get_sheet_data_4217():
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -169,6 +186,15 @@ def operador_4217():
 @app.route('/send_row_4217', methods=['POST'])
 def send_row_4217():
 
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end   
+    
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
+
     def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -197,22 +223,32 @@ def send_row_4217():
 
         linha_planilha = table1.index[0]
 
-        wks1.update("F" + str(linha_planilha + 1), qtReal) # qt real
-        wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
-        wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
-        wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
-        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
+        updates = [
+            {"range": "F" + str(linha_planilha + 1), "values": [[qtReal]]},
+            {"range": "I" + str(linha_planilha + 1), "values": [[qtMortas]]},
+            {"range": "G" + str(linha_planilha + 1), "values": [[maquina]]},
+            {"range": "M" + str(linha_planilha + 1), "values": [[finalizou]]},
+            {"range": "J" + str(linha_planilha + 1), "values": [[motivo]]},
+        ]
 
-    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end   
-    
-    print(linha)
+        wks1.batch_update(updates)
 
-    id_linha = linha[0]
-    qtReal = linha[5]
-    maquina = linha[8]
-    qtMortas = linha[6]
-    finalizou = linha[9]
-    motivo = linha[7]
+        list1 = wks1.get()
+
+        header = wks1.row_values(4)
+
+        table1 = pd.DataFrame(list1)     
+        table1 = table1.set_axis(header, axis=1)
+
+        table1 = table1.iloc[4:]
+        
+        table1.reset_index(drop=True)
+
+        table1 = table1[table1['ID'] == id]
+
+        linha_planilha = table1.index[0]
+
+        print(table1)
 
     if finalizou == 'Não':
         maquina = ''
@@ -229,8 +265,6 @@ def send_row_4217():
 # Rota inicial da aplicação
 @app.route('/3654', methods=['GET'])
 def operador_3654():
-
-    time.sleep(5)
 
     def get_sheet_data_3654():
 
@@ -275,6 +309,15 @@ def operador_3654():
 @app.route('/send_row_3654', methods=['POST'])
 def send_row_3654():
 
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
+
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
+
     def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -309,23 +352,10 @@ def send_row_3654():
         wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
         wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
 
-    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
-
-    id_linha = linha[0]
-    qtReal = linha[5]
-    maquina = linha[8]
-    qtMortas = linha[6]
-    finalizou = linha[9]
-    motivo = linha[7]
-
     if finalizou == 'Não':
         maquina = ''
 
-    print(id_linha, qtReal, maquina, qtReal, finalizou,motivo)
-
     att_linha(id_linha, qtReal, maquina, qtMortas, finalizou,motivo)
-
-    print("ok, atualizou")
 
     if finalizou == 'Sim':
         flash(f"O id {id_linha} foi enviado para o banco de dados com sucesso", category='success')
@@ -334,11 +364,9 @@ def send_row_3654():
 
     return jsonify({'message': 'success', 'reload': True})
 
-# Rota inicial da aplicação
+# R ota inicial da aplicação
 @app.route('/4200', )
 def operador_4200():
-
-    time.sleep(5)
 
     def get_sheet_data_4200():
 
@@ -383,6 +411,18 @@ def operador_4200():
 @app.route('/send_row_4200', methods=['POST'])
 def send_row_4200():
 
+    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
+
+    id_linha = linha[0]
+    qtReal = linha[5]
+    maquina = linha[8]
+    qtMortas = linha[6]
+    finalizou = linha[9]
+    motivo = linha[7]
+
+    if finalizou == 'Não':
+        maquina = ''
+
     def att_linha(id, qtReal, maquina, qtMortas, finalizou, motivo):
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -411,23 +451,14 @@ def send_row_4200():
 
         linha_planilha = table1.index[0]
 
-        wks1.update("F" + str(linha_planilha + 1), qtReal) # qt real
-        wks1.update("I" + str(linha_planilha + 1), qtMortas) # qt morta
-        wks1.update("G" + str(linha_planilha + 1), maquina) # maquina
-        wks1.update("M" + str(linha_planilha + 1), finalizou) # finalizou
-        wks1.update("J" + str(linha_planilha + 1), motivo) # motivo
-
-    linha = request.get_json()  # Obter os dados da linha enviados pelo front-end
-
-    id_linha = linha[0]
-    qtReal = linha[5]
-    maquina = linha[8]
-    qtMortas = linha[6]
-    finalizou = linha[9]
-    motivo = linha[7]
-
-    if finalizou == 'Não':
-        maquina = ''
+        updates = [
+            {"range": "F" + str(linha_planilha + 1), "values": [[qtReal]]},
+            {"range": "I" + str(linha_planilha + 1), "values": [[qtMortas]]},
+            {"range": "G" + str(linha_planilha + 1), "values": [[maquina]]},
+            {"range": "M" + str(linha_planilha + 1), "values": [[finalizou]]},
+            {"range": "J" + str(linha_planilha + 1), "values": [[motivo]]},
+        ]
+        wks1.batch_update(updates)
 
     att_linha(id_linha, qtReal, maquina, qtMortas, finalizou, motivo)
 

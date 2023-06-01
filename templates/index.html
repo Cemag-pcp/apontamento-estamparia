@@ -55,37 +55,5 @@
     </div>
     <script src="static\js\navbar.js"></script>
     <script src="static\js\loading.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Função para enviar a linha para o backend quando o botão for clicado
-            $('.botao-enviar-linha').on('click', function() {
-                var linha = $(this).closest('tr');
-                var dadosLinha = [];
-
-                // Itera sobre as células da linha e armazena os valores em um array
-                linha.find('input, select').each(function() {
-                    var valor = $(this).val();
-                    dadosLinha.push(valor);
-                });
-
-                // Envia a linha para o backend usando AJAX
-                $.ajax({
-                    url: '/send_row',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(dadosLinha),
-                    success: function(response) {
-                        alert(response.mensagem);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-                
-                location.reload(); // Atualiza a página
-            });
-        });
-
-    </script>
 </body>
 </html>
