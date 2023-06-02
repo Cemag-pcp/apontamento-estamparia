@@ -182,7 +182,7 @@ body{
   }
 
 #titulo{
-    position: fixed;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -195,7 +195,7 @@ body{
 }
 @media (max-width: 1450px) { /* Tamanho da tela de celular */
     #titulo {
-        position: fixed;
+        position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
