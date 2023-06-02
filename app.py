@@ -105,6 +105,7 @@ def send_row_4238():
             {"range": "M" + str(linha_planilha + 1), "values": [[finalizou]]},
             {"range": "J" + str(linha_planilha + 1), "values": [[motivo]]},
         ]
+        
         wks1.batch_update(updates)
 
         list1 = wks1.get()
