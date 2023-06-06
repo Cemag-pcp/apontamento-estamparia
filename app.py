@@ -12,10 +12,10 @@ app.secret_key = "apontamentoestamparia"
 # Função para obter os dados da planilha
 
 # Rota inicial da aplicação
-@app.route('/4238')
-def operador_4238():
+@app.route('/4322')
+def operador_4322():
 
-    def get_sheet_data_4238():
+    def get_sheet_data_4322():
 
         scope = ['https://www.googleapis.com/auth/spreadsheets',
                 "https://www.googleapis.com/auth/drive"]
@@ -25,7 +25,7 @@ def operador_4238():
         sa = gspread.service_account('service_account.json')    
 
         name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
-        worksheet1 = 'OPERADOR 4238'
+        worksheet1 = 'OPERADOR 4322'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
         list1 = wks1.get()
@@ -49,15 +49,15 @@ def operador_4238():
         
         return values, table1
 
-    sheet_data, table1 = get_sheet_data_4238()
+    sheet_data, table1 = get_sheet_data_4322()
     
     print(table1)
 
-    return render_template('operador_4238.html', sheet_data=sheet_data)
+    return render_template('operador_4322.html', sheet_data=sheet_data)
 
 # Rota para enviar a linha para outra planilha
-@app.route('/send_row_4238', methods=['POST'])
-def send_row_4238():
+@app.route('/send_row_4322', methods=['POST'])
+def send_row_4322():
     
     linha = request.get_json()  # Recebe os dados da linha enviados pelo front-end
     
@@ -78,7 +78,7 @@ def send_row_4238():
         sa = gspread.service_account('service_account.json')    
 
         name_sheet1 = 'RQ PCP-003-001 (APONTAMENTO ESTAMPARIA) / RQ PCP-009-000 (SEQUENCIAMENTO ESTAMPARIA) / RQ CQ-008-000 (Inspeção do Corte) / RQ CQ-015-000 (Inspeção da Estamparia)'
-        worksheet1 = 'OPERADOR 4238'
+        worksheet1 = 'OPERADOR 4322'
         sh1 = sa.open(name_sheet1)
         wks1 = sh1.worksheet(worksheet1)
         list1 = wks1.get()
@@ -468,7 +468,7 @@ def send_row_4200():
     else:
         flash(f"O id {id_linha} foi enviado para o banco de dados porém não foi finalizado", category='sucess')
 
-    #sheet_data, table1 = get_sheet_data_4238()
+    #sheet_data, table1 = get_sheet_data_4322()
 
     #retorna mensagem de sucesso
     return jsonify({'message': 'success', 'reload': True})
