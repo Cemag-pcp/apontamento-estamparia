@@ -1,19 +1,14 @@
-function showLoading() {
-    const div = document.createElement('div');
-    div.classList.add('loading','centralize');
-
-    const label = document.createElement('label');
-    label.innerText = 'Carregando...';
-
-    div.appendChild(label);
-
-    document.body.appendChild(div);
-
-    setTimeout(() => hideLoading(),10000);
+function mostrarLoadingOverlay() {
+    // Obtém referência para o elemento "loading-overlay"
+    var loadingOverlay = document.getElementById('loading-overlay');
+    
+    // Altera o estilo para exibir o "loading-overlay"
+    loadingOverlay.style.display = 'flex';
 }
-function hideLoading() {
-    const loadings = document.getElementsByClassName('loading');
-    if(loadings.length){
-        loadings[0].remove();
+
+document.addEventListener('DOMContentLoaded', function() {
+    var links = document.querySelectorAll('.navigation a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', mostrarLoadingOverlay);
     }
-}
+});
